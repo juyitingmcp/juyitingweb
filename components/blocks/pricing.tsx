@@ -59,9 +59,9 @@ export function Pricing({ title, subtitle, plans, monthlyText, yearlyText }: Pri
                 </li>
               ))}
             </ul>
-            <button className="mt-8 w-full bg-gray-100 text-gray-900 hover:bg-gray-200 py-2 px-4 rounded-lg transition-colors">
+            <a href="/hall" className="mt-8 w-full bg-gray-100 text-gray-900 hover:bg-gray-200 py-2 px-4 rounded-lg transition-colors block text-center">
               开始使用
-            </button>
+            </a>
           </div>
 
           {/* 专业版 - 推荐 */}
@@ -97,9 +97,9 @@ export function Pricing({ title, subtitle, plans, monthlyText, yearlyText }: Pri
                 </li>
               ))}
             </ul>
-            <button className="mt-8 w-full bg-blue-600 text-white hover:bg-blue-700 py-2 px-4 rounded-lg transition-colors">
+            <a href="/hall" className="mt-8 w-full bg-blue-600 text-white hover:bg-blue-700 py-2 px-4 rounded-lg transition-colors block text-center">
               立即升级
-            </button>
+            </a>
           </div>
 
           {/* 企业版 */}
@@ -125,9 +125,9 @@ export function Pricing({ title, subtitle, plans, monthlyText, yearlyText }: Pri
                 </li>
               ))}
             </ul>
-            <button className="mt-8 w-full bg-gray-900 text-white hover:bg-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 py-2 px-4 rounded-lg transition-colors">
+            <a href="/hall" className="mt-8 w-full bg-gray-900 text-white hover:bg-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 py-2 px-4 rounded-lg transition-colors block text-center">
               联系销售
-            </button>
+            </a>
           </div>
         </div>
 

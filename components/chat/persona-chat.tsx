@@ -129,15 +129,8 @@ export function PersonaChat({
   };
 
   const getPersonaAvatar = (persona: AIPersona) => {
-    const avatarMap = {
-      'introspective-sage': '🤔',
-      'fiery-challenger': '🔥',
-      'gentle-maid': '💕',
-      'efficiency-master': '⚡',
-      'data-emperor': '📊',
-      'idea-king': '💡'
-    };
-    return avatarMap[persona.id as keyof typeof avatarMap] || '🤖';
+    // 直接使用persona对象中的avatar字段，它已经是emoji了
+    return persona.avatar || '🤖';
   };
 
   return (

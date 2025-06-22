@@ -25,7 +25,7 @@ export default async function HomePage({ params }: Props) {
         description={t('hero.description')}
         primaryCTA={{
           text: t('hero.cta'),
-          href: '/workspace',
+          href: '/hall',
         }}
         secondaryCTA={{
           text: t('hero.secondaryCta'),
@@ -62,7 +62,7 @@ export default async function HomePage({ params }: Props) {
         description="立即体验聚义厅，让AI智囊团为您提供专业建议"
         primaryCTA={{
           text: t('common.getStarted'),
-          href: '/workspace',
+          href: '/hall',
         }}
       />
     </main>

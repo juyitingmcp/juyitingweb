@@ -87,9 +87,11 @@ export function Navbar({ className }: NavbarProps) {
             <Button variant="bordered" size="sm">
               登录
             </Button>
-            <Button size="sm" className="bg-gradient-to-r from-blue-500 to-purple-600">
-              开始协作
-            </Button>
+            <a href="/hall">
+              <Button size="sm" className="bg-gradient-to-r from-blue-500 to-purple-600">
+                开始协作
+              </Button>
+            </a>
           </div>
 
           {/* Mobile menu button */}
@@ -131,9 +133,11 @@ export function Navbar({ className }: NavbarProps) {
               <Button variant="bordered" className="w-full">
                 登录
               </Button>
-              <Button className="w-full bg-gradient-to-r from-blue-500 to-purple-600">
-                开始协作
-              </Button>
+              <a href="/hall" className="w-full">
+                <Button className="w-full bg-gradient-to-r from-blue-500 to-purple-600">
+                  开始协作
+                </Button>
+              </a>
             </div>
           </div>
         </div>

@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { corePersonas } from '@/lib/data/personas';
 import { AIPersona } from '@/types';
 
@@ -107,7 +108,11 @@ export default function SettingsPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
                 {personas.filter(p => p.is_core).map(persona => (
                   <Card key={persona.id} className="p-4 flex items-center space-x-4">
-                    <img src={persona.avatar} alt={persona.name} className="w-12 h-12 rounded-full" />
+                    <Avatar className="w-12 h-12">
+                      <AvatarFallback className="text-lg bg-gradient-to-br from-blue-500 to-purple-500 text-white">
+                        {persona.avatar}
+                      </AvatarFallback>
+                    </Avatar>
                     <div>
                       <h3 className="font-semibold">{persona.name}</h3>
                       <p className="text-sm text-gray-500">{t('personas.core')}</p>
@@ -116,7 +121,11 @@ export default function SettingsPage() {
                 ))}
                  {personas.filter(p => !p.is_core).map(persona => (
                   <Card key={persona.id} className="p-4 flex items-center space-x-4">
-                    <img src={persona.avatar} alt={persona.name} className="w-12 h-12 rounded-full" />
+                    <Avatar className="w-12 h-12">
+                      <AvatarFallback className="text-lg bg-gradient-to-br from-green-500 to-teal-500 text-white">
+                        {persona.avatar}
+                      </AvatarFallback>
+                    </Avatar>
                     <div>
                       <h3 className="font-semibold">{persona.name}</h3>
                       <p className="text-sm text-gray-500">{t('personas.custom')}</p>

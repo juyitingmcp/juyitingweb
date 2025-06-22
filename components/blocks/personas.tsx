@@ -81,9 +81,9 @@ export function Personas({ title, subtitle, personas }: PersonasProps) {
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
             体验智能人格协作，开启全新的思维模式
           </p>
-          <button className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors">
+          <a href="/hall" className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors">
             立即体验
-          </button>
+          </a>
         </div>
       </div>
     </section>

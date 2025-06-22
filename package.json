@@ -8,6 +8,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "pages:build": "npx @cloudflare/next-on-pages",
+    "pages:dev": "npx @cloudflare/next-on-pages --watch",
+    "pages:deploy": "npm run pages:build && wrangler pages deploy",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
@@ -50,6 +53,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "prisma": "^5.19.1"
+    "@cloudflare/next-on-pages": "^1.13.12",
+    "prisma": "^5.19.1",
+    "wrangler": "^4.20.5"
   }
 }

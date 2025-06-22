@@ -24,4 +24,11 @@
 *.sw?
 
 # macOS
-.DS_Store 
+.DS_Store
+
+# Cloudflare Pages / Vercel
+/.vercel/
+/.wrangler/
+
+# Wrangler
+wrangler.log 

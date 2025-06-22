@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { 
   Select, 
   SelectContent,
@@ -231,7 +232,11 @@ export default function ScenariosPage() {
                       {template.persona_ids.map(id => {
                           const persona = getPersonaById(id);
                           return persona ? (
-                              <img key={id} src={persona.avatar} alt={persona.name} className="inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-gray-800" />
+                              <Avatar key={id} className="inline-block h-8 w-8 ring-2 ring-white dark:ring-gray-800">
+                                <AvatarFallback className="text-sm bg-gradient-to-br from-blue-500 to-purple-500 text-white">
+                                  {persona.avatar}
+                                </AvatarFallback>
+                              </Avatar>
                           ) : null;
                       })}
                   </div>

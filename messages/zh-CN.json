@@ -151,7 +151,15 @@
   },
   "hall": {
     "title": "聚义厅人格大厅",
-    "description": "选择您需要的AI人格组成专属智囊团"
+    "subtitle": "选择您需要的AI人格组成专属智囊团",
+    "description": "选择您需要的AI人格组成专属智囊团",
+    "persona_list": "人格列表",
+    "tags_title": "专业标签",
+    "description_title": "人格描述",
+    "start_chat_button": "开始对话",
+    "思维分析类": "思维分析类",
+    "战略思考": "战略思考",
+    "逻辑分析": "逻辑分析"
   },
   "chat": {
     "title": "协作聊天",
@@ -161,17 +169,42 @@
     "title": "聚义厅场景模板",
     "description": "选择一个场景模板，快速启动你的AI智囊团协作",
     "subtitle": "专业的场景模板，覆盖各种工作场景",
+    "search_placeholder": "搜索模板名称或描述...",
     "searchPlaceholder": "搜索模板名称或描述...",
+    "create_team": "组建团队",
+    "members": "个成员",
+    "sorts": {
+      "popular": "最受欢迎"
+    },
     "categories": {
       "all": "全部",
+      "professional": "专业服务",
       "business": "商业决策",
       "creative": "创意创新",
+      "design": "设计开发",
+      "tech": "技术开发",
+      "marketing": "市场营销",
+      "decision": "决策分析",
+      "writing": "内容创作",
       "technical": "技术开发",
       "personal": "个人成长",
       "management": "项目管理",
       "product": "产品开发",
       "strategy": "战略分析"
     },
+    "scenarios": {
+      "categories": {
+        "professional": "专业服务",
+        "design": "设计开发",
+        "tech": "技术开发",
+        "marketing": "市场营销",
+        "decision": "决策分析",
+        "writing": "内容创作"
+      }
+    },
+    "个人成长": "个人成长",
+    "创意创新": "创意创新",
+    "项目管理": "项目管理",
     "difficulty": {
       "beginner": "入门",
       "intermediate": "中级",
@@ -181,6 +214,34 @@
     "noResults": "未找到匹配的场景模板",
     "tryDifferentKeywords": "尝试使用不同的关键词或清除筛选条件。",
     "templates": {
+      "prod-design": {
+        "title": "产品设计流程",
+        "description": "从用户需求到产品上线的完整设计流程"
+      },
+      "tech-dev": {
+        "title": "技术开发协作", 
+        "description": "高效的技术开发团队协作模式"
+      },
+      "mkt-plan": {
+        "title": "市场营销策划",
+        "description": "制定全面的市场营销推广策略"
+      },
+      "team-manage": {
+        "title": "团队管理协作",
+        "description": "提升团队协作效率和管理水平"
+      },
+      "career-plan": {
+        "title": "职业规划指导",
+        "description": "制定个人职业发展路径和目标"
+      },
+      "investment": {
+        "title": "投资决策分析",
+        "description": "深度分析投资机会和风险评估"
+      },
+      "startup-decision": {
+        "title": "创业决策支持",
+        "description": "为创业项目提供全方位决策支持"
+      },
       "startup-evaluation": {
         "title": "创业项目评估",
         "description": "全方位分析创业项目的可行性、风险和机会，提供专业决策建议"
@@ -269,12 +330,21 @@
   },
   "settings": {
     "title": "设置",
+    "subtitle": "个性化您的聚义厅体验",
     "description": "个性化您的聚义厅体验",
     "tabs": {
+      "profile": "个人信息",
+      "billing": "账单管理",
       "general": "通用",
       "personas": "人格偏好",
       "notifications": "通知",
       "account": "账户"
+    },
+    "profile": {
+      "title": "个人资料",
+      "name": "姓名",
+      "email": "邮箱",
+      "save": "保存"
     },
     "general": {
       "title": "通用设置",

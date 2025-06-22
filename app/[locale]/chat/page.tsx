@@ -55,15 +55,8 @@ function ChatPageContent() {
   }, [searchParams]);
 
   const getPersonaAvatar = (personaId: string) => {
-    const avatarMap: Record<string, string> = {
-      'introspective-sage': '🤔',
-      'fiery-challenger': '🔥',
-      'gentle-maid': '💕',
-      'efficiency-master': '⚡',
-      'data-emperor': '📊',
-      'idea-king': '💡'
-    };
-    return avatarMap[personaId] || '🤖';
+    const persona = corePersonas.find(p => p.id === personaId);
+    return persona?.avatar || '🤖';
   };
 
   const getDifficultyColor = (difficulty: string) => {

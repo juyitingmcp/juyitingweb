@@ -6,6 +6,7 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig = {
   experimental: {
     optimizePackageImports: ['@heroui/system', '@heroui/theme', 'lucide-react'],
+    serverComponentsExternalPackages: ['@cloudflare/kv'],
   },
   images: {
     remotePatterns: [
