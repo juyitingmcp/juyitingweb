@@ -1,5 +1,3 @@
-export const runtime = 'edge';
-
 'use client';
 
 import { useState, useEffect, Suspense } from 'react';
@@ -13,6 +11,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Users, Settings, Download, Share, Target, Clock } from 'lucide-react';
 import { corePersonas } from '@/lib/data/personas';
 import { AIPersona } from '@/types';
+
 
 interface ScenarioTemplate {
   id: string;
