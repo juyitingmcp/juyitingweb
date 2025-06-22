@@ -160,6 +160,7 @@
   "scenarios": {
     "title": "聚义厅场景模板",
     "description": "选择一个场景模板，快速启动你的AI智囊团协作",
+    "subtitle": "专业的场景模板，覆盖各种工作场景",
     "searchPlaceholder": "搜索模板名称或描述...",
     "categories": {
       "all": "全部",

@@ -165,7 +165,10 @@
       "business": "Business Decisions",
       "creative": "Creative Innovation",
       "technical": "Technical Development", 
-      "personal": "Personal Growth"
+      "personal": "Personal Growth",
+      "management": "Project Management",
+      "product": "Product Development",
+      "strategy": "Strategic Analysis"
     }
   },
   "settings": {
