@@ -1,0 +1,284 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# API 和数据库模式
+
+## API 路由模式
+
+结构：
+
+### 基础 API 结构
+```typescript
+// app/api/example/route.ts
+import { NextResponse } from 'next/server';
+import { auth } from '@/features/auth/auth';
+
+export async function GET(request: Request) {
+  try {
+    // 认证检查
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+
+    // 业务逻辑
+    const data = await fetchData();
+
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error('API Error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+```
+
+### 错误处理模式
+参考 [credits/route.ts](mdc:openapp-saas-pro-i18n/app/api/model/credits/route.ts)：
+
+```typescript
+try {
+  // API 逻辑
+} catch (error) {
+  console.error('Error message:', error);
+  return NextResponse.json(
+    { error: 'Failed to process request' },
+    { status: 500 }
+  );
+}
+```
+
+### 分页模式
+```typescript
+const searchParams = request.nextUrl.searchParams;
+const page = parseInt(searchParams.get('page') || '1', 10);
+const perPage = parseInt(searchParams.get('perPage') || '10', 10);
+const skip = (page - 1) * perPage;
+
+const [data, total] = await Promise.all([
+  prisma.model.findMany({
+    skip,
+    take: perPage,
+    orderBy: { createdAt: 'desc' }
+  }),
+  prisma.model.count()
+]);
+
+return NextResponse.json({
+  data,
+  total,
+  page,
+  perPage
+});
+```
+
+## Prisma 数据库模式
+
+参考 [schema.prisma](mdc:openapp-saas-pro-i18n/prisma/schema.prisma)：
+
+### 模型定义模式
+```prisma
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  credit    Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // 关联关系
+  credits       Credit[]
+  transactions  Transaction[]
+
+  @@map("users")
+}
+```
+
+### 枚举类型
+```prisma
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+```
+
+### 服务层模式
+
+参考 [credit-service.ts](mdc:openapp-saas-pro-i18n/services/credit-service.ts)：
+
+```typescript
+export async function addCredit(
+  userId: string,
+  amount: number,
+  type: CreditTransType,
+  description?: string
+): Promise<Credit> {
+  return await prisma.$transaction(async (tx) => {
+    // 创建积分记录
+    const credit = await tx.credit.create({
+      data: {
+        userId,
+        credits: amount,
+        transType: type,
+        description,
+        status: CreditStatus.ACTIVE
+      }
+    });
+
+    // 更新用户积分
+    await tx.user.update({
+      where: { id: userId },
+      data: {
+        credit: {
+          increment: amount
+        }
+      }
+    });
+
+    return credit;
+  });
+}
+```
+
+## Webhook 处理模式
+
+参考 [paddle/webhook/route.ts](mdc:openapp-saas-pro-i18n/app/api/billing/paddle/webhook/route.ts)：
+
+### Webhook 验证
+```typescript
+export async function POST(request: Request) {
+  try {
+    // 验证 webhook 签名
+    const eventData = await verifyWebhook(request);
+    if (!eventData) {
+      return NextResponse.json(
+        { error: 'Invalid webhook signature' },
+        { status: 400 }
+      );
+    }
+
+    // 处理不同事件类型
+    switch (eventData.eventType) {
+      case 'subscription.created':
+        await handleSubscriptionCreated(eventData.data);
+        break;
+      case 'transaction.completed':
+        await handleTransactionCompleted(eventData.data);
+        break;
+      default:
+        console.log(`Unhandled event: ${eventData.eventType}`);
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Webhook error:', error);
+    return NextResponse.json(
+      { error: 'Webhook processing failed' },
+      { status: 500 }
+    );
+  }
+}
+```
+
+### 事务处理
+```typescript
+await prisma.$transaction(async (tx) => {
+  // 多个数据库操作
+  const user = await tx.user.update({...});
+  const credit = await tx.credit.create({...});
+  const transaction = await tx.transaction.update({...});
+  
+  return { user, credit, transaction };
+});
+```
+
+## 中间件模式
+
+参考 [middleware.ts](mdc:openapp-saas-pro-i18n/middleware.ts)：
+
+```typescript
+import { NextRequest } from 'next/server';
+import createMiddleware from 'next-intl/middleware';
+
+export default function middleware(request: NextRequest) {
+  // 国际化中间件
+  const handleI18nRouting = createMiddleware(routing);
+  
+  // 自定义逻辑
+  if (request.nextUrl.pathname.startsWith('/api/')) {
+    // API 路由处理
+  }
+  
+  return handleI18nRouting(request);
+}
+```
+
+## 查询模式
+
+### 复杂查询
+```typescript
+const result = await prisma.user.findMany({
+  where: {
+    AND: [
+      { status: 'ACTIVE' },
+      { credit: { gte: 0 } }
+    ]
+  },
+  include: {
+    credits: {
+      where: { status: 'ACTIVE' },
+      orderBy: { createdAt: 'desc' }
+    }
+  },
+  orderBy: { createdAt: 'desc' },
+  take: 10
+});
+```
+
+### 聚合查询
+```typescript
+const stats = await prisma.credit.aggregate({
+  where: { userId },
+  _sum: { credits: true },
+  _count: { id: true }
+});
+```
+
+## Cron 任务模式
+
+参考 [handle-credits/route.ts](mdc:openapp-saas-pro-i18n/app/api/cron/handle-credits/route.ts)：
+
+```typescript
+export async function GET(request: Request) {
+  // 安全检查
+  const authHeader = request.headers.get('Authorization');
+  if (!authHeader || authHeader !== `Bearer ${process.env.CRON_API_KEY}`) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    // 执行定时任务
+    const result = await processCronTask();
+    
+    return NextResponse.json({
+      success: true,
+      data: result
+    });
+  } catch (error) {
+    console.error('Cron task error:', error);
+    return NextResponse.json(
+      { error: 'Cron task failed' },
+      { status: 500 }
+    );
+  }
+}
+```

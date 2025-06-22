@@ -1,0 +1,330 @@
+{
+  "common": {
+    "productName": "聚义厅",
+    "slogan": "重新定义AI时代的人格协作",
+    "getStarted": "立即开始",
+    "learnMore": "了解更多",
+    "signIn": "登录",
+    "signOut": "退出",
+    "loading": "加载中...",
+    "error": "出现错误",
+    "success": "操作成功"
+  },
+  "navigation": {
+    "home": "首页",
+    "about": "关于",
+    "pricing": "价格",
+    "blog": "博客",
+    "workspace": "工作台",
+    "dashboard": "仪表板"
+  },
+  "hero": {
+    "title": "聚义厅：重新定义AI时代的人格协作",
+    "subtitle": "让每个人都能拥有一支专属的AI智囊团",
+    "description": "通过人格化的协作，获得超越个体认知局限的智慧支持。专业化分工、多维度分析、情感与理性平衡。",
+    "cta": "免费体验",
+    "secondaryCta": "观看演示"
+  },
+  "features": {
+    "title": "核心功能特性",
+    "subtitle": "群贤毕至，智慧协作",
+    "items": [
+      {
+        "title": "智能人格编排",
+        "description": "根据问题类型自动匹配最佳人格组合，智能调度协作流程"
+      },
+      {
+        "title": "专业化分工",
+        "description": "每个AI人格专注特定思维模式，深度专业化提供有价值建议"
+      },
+      {
+        "title": "多维度分析",
+        "description": "从不同角度同时分析问题，确保无死角覆盖，避免思维盲区"
+      },
+      {
+        "title": "场景化模板",
+        "description": "针对决策分析、技术开发、创意策划等场景的专业模板"
+      }
+    ]
+  },
+  "personas": {
+    "title": "核心人格团队",
+    "subtitle": "各有所长，协力为义",
+    "items": [
+      {
+        "name": "自省姐",
+        "role": "深度思考者",
+        "description": "运用MECE原则和第一性原理，进行深度逻辑分析和战略思考",
+        "skills": ["战略分析", "问题拆解", "逻辑验证"]
+      },
+      {
+        "name": "暴躁老哥",
+        "role": "现实检验者",
+        "description": "直接犀利地质疑和挑战，确保考虑风险和现实约束",
+        "skills": ["风险分析", "现实检验", "质疑挑战"]
+      },
+      {
+        "name": "女仆",
+        "role": "情感支持者",
+        "description": "提供温暖体贴的支持和鼓励，平衡理性分析的冷硬",
+        "skills": ["情感支持", "信心建立", "温暖建议"]
+      },
+      {
+        "name": "效率狂",
+        "role": "执行优化者",
+        "description": "专注高效执行和时间管理，将思考转化为具体行动",
+        "skills": ["执行计划", "时间管理", "效率优化"]
+      }
+    ]
+  },
+  "pricing": {
+    "title": "选择适合的方案",
+    "subtitle": "从免费体验到专业版，满足不同需求",
+    "monthly": "月付",
+    "yearly": "年付",
+    "plans": {
+      "free": {
+        "name": "体验版",
+        "description": "免费体验核心功能",
+        "price": "免费",
+        "features": [
+          "10次协作额度",
+          "4个核心人格",
+          "基础场景模板",
+          "社区支持"
+        ]
+      },
+      "pro": {
+        "name": "专业版",
+        "description": "适合个人和小团队",
+        "price": "¥99",
+        "priceUnit": "/月",
+        "features": [
+          "无限协作额度",
+          "全部人格库",
+          "高级场景模板",
+          "自定义人格",
+          "优先支持"
+        ]
+      },
+      "enterprise": {
+        "name": "企业版",
+        "description": "适合大型团队和企业",
+        "price": "定制",
+        "features": [
+          "专属人格定制",
+          "私有化部署",
+          "API集成",
+          "专属客服",
+          "培训服务"
+        ]
+      }
+    }
+  },
+  "auth": {
+    "signInTitle": "登录聚义厅",
+    "signInDescription": "开始您的AI人格协作之旅",
+    "signInWithGoogle": "使用 Google 登录",
+    "signInWithGithub": "使用 GitHub 登录",
+    "orContinueWith": "或继续使用",
+    "email": "邮箱",
+    "password": "密码",
+    "forgotPassword": "忘记密码？",
+    "dontHaveAccount": "还没有账户？",
+    "signUp": "注册",
+    "alreadyHaveAccount": "已有账户？"
+  },
+  "workspace": {
+    "title": "工作台",
+    "createSession": "创建新协作",
+    "recentSessions": "最近的协作",
+    "selectPersonas": "选择人格组合",
+    "startCollaboration": "开始协作",
+    "sessionTitle": "协作主题",
+    "sessionDescription": "描述您想要讨论的问题或需求"
+  },
+  "nav": {
+    "hall": "人格大厅",
+    "chat": "协作聊天", 
+    "scenarios": "场景模板",
+    "settings": "设置"
+  },
+  "hall": {
+    "title": "聚义厅人格大厅",
+    "description": "选择您需要的AI人格组成专属智囊团"
+  },
+  "chat": {
+    "title": "协作聊天",
+    "description": "与您的AI智囊团开始协作"
+  },
+  "scenarios": {
+    "title": "聚义厅场景模板",
+    "description": "选择一个场景模板，快速启动你的AI智囊团协作",
+    "searchPlaceholder": "搜索模板名称或描述...",
+    "categories": {
+      "all": "全部",
+      "business": "商业决策",
+      "creative": "创意创新",
+      "technical": "技术开发",
+      "personal": "个人成长",
+      "management": "项目管理",
+      "product": "产品开发",
+      "strategy": "战略分析"
+    },
+    "difficulty": {
+      "beginner": "入门",
+      "intermediate": "中级",
+      "advanced": "高级"
+    },
+    "useTemplate": "使用模板",
+    "noResults": "未找到匹配的场景模板",
+    "tryDifferentKeywords": "尝试使用不同的关键词或清除筛选条件。",
+    "templates": {
+      "startup-evaluation": {
+        "title": "创业项目评估",
+        "description": "全方位分析创业项目的可行性、风险和机会，提供专业决策建议"
+      },
+      "investment-analysis": {
+        "title": "投资决策分析",
+        "description": "深度分析投资机会，评估风险收益比，制定投资策略"
+      },
+      "market-strategy": {
+        "title": "市场策略规划",
+        "description": "制定产品市场策略，分析竞争环境，设计推广方案"
+      },
+      "product-innovation": {
+        "title": "产品创新设计",
+        "description": "从用户需求出发，设计创新产品功能和体验"
+      },
+      "content-creation": {
+        "title": "内容创作策划",
+        "description": "策划有影响力的内容，从选题到执行的全流程指导"
+      },
+      "architecture-design": {
+        "title": "系统架构设计",
+        "description": "设计可扩展的系统架构，考虑性能、安全和维护性"
+      },
+      "bug-analysis": {
+        "title": "问题诊断分析",
+        "description": "系统性分析技术问题，找到根因并制定解决方案"
+      },
+      "career-planning": {
+        "title": "职业规划指导",
+        "description": "分析个人优势和市场机会，制定职业发展路径"
+      },
+      "skill-learning": {
+        "title": "技能学习规划",
+        "description": "制定系统性的技能学习计划，提高学习效率"
+      },
+      "enterprise-risk-management": {
+        "title": "企业风险管控",
+        "description": "全面识别和评估企业潜在风险，制定预防和应对策略，确保稳健运营"
+      },
+      "business-model-innovation": {
+        "title": "商业模式创新",
+        "description": "颠覆传统商业模式，设计和验证具有竞争力的创新商业模式"
+      },
+      "marketing-campaign-design": {
+        "title": "营销活动策划",
+        "description": "策划一场从创意到执行的全链路病毒式营销活动"
+      },
+      "technical-debt-review": {
+        "title": "技术债评审",
+        "description": "全面评审和量化技术债，制定分阶段偿还计划，提升系统健康度"
+      },
+      "critical-incident-response": {
+        "title": "重大故障复盘",
+        "description": "快速响应并彻底复盘线上重大故障，从根源上解决问题并建立防范机制"
+      },
+      "complex-negotiation-strategy": {
+        "title": "复杂谈判策略",
+        "description": "为关键谈判制定策略，分析对手，设计双赢方案"
+      },
+      "agile-project-kickoff": {
+        "title": "敏捷项目启动",
+        "description": "规划并启动一个敏捷项目，定义MVP，拆解用户故事，制定迭代计划"
+      },
+      "team-conflict-resolution": {
+        "title": "团队冲突解决",
+        "description": "分析团队内部冲突根源，制定有效的沟通和解决方案，重建团队信任"
+      },
+      "full-feature-development": {
+        "title": "全功能开发规划",
+        "description": "从需求到上线，规划一个完整功能的开发全流程，覆盖设计、开发、测试、部署"
+      },
+      "user-feedback-analysis": {
+        "title": "用户反馈深度分析",
+        "description": "系统性收集和分析用户反馈，挖掘潜在需求，转化为可执行的产品改进方案"
+      },
+      "swot-deep-analysis": {
+        "title": "SWOT深度分析",
+        "description": "运用多个人格视角，对企业或个人进行全面、客观、深入的SWOT分析"
+      },
+      "competitor-deep-dive": {
+        "title": "竞争对手深度剖析",
+        "description": "从战略、产品、技术、市场等多维度，系统性剖析核心竞争对手"
+      }
+    }
+  },
+  "settings": {
+    "title": "设置",
+    "description": "个性化您的聚义厅体验",
+    "tabs": {
+      "general": "通用",
+      "personas": "人格偏好",
+      "notifications": "通知",
+      "account": "账户"
+    },
+    "general": {
+      "title": "通用设置",
+      "language": "语言",
+      "theme": "主题",
+      "timezone": "时区",
+      "autoSave": "自动保存",
+      "autoSaveDescription": "自动保存您的协作会话"
+    },
+    "personas": {
+      "title": "人格偏好",
+      "defaultPersonas": "默认人格组合",
+      "defaultPersonasDescription": "选择您最常用的人格组合作为默认选项",
+      "personaStyle": "人格风格",
+      "personaStyleDescription": "调整AI人格的回复风格和详细程度",
+      "collaborative": "协作型",
+      "direct": "直接型",
+      "detailed": "详细型",
+      "concise": "简洁型"
+    },
+    "notifications": {
+      "title": "通知设置",
+      "emailNotifications": "邮件通知",
+      "pushNotifications": "推送通知",
+      "collaborationUpdates": "协作更新",
+      "systemUpdates": "系统更新",
+      "weeklyDigest": "周报摘要"
+    },
+    "account": {
+      "title": "账户设置",
+      "profile": "个人资料",
+      "subscription": "订阅管理",
+      "usage": "使用统计",
+      "dataExport": "数据导出",
+      "deleteAccount": "删除账户"
+    },
+    "actions": {
+      "save": "保存设置",
+      "cancel": "取消",
+      "reset": "重置",
+      "export": "导出",
+      "delete": "删除"
+    }
+  },
+  "footer": {
+    "description": "重新定义AI时代的人格协作，让每个人都拥有专属的AI智囊团。",
+    "slogan": "聚义千秋，智慧共享",
+    "copyright": "© 2025 聚义厅科技有限公司. 保留所有权利.",
+    "product": "产品",
+    "company": "公司", 
+    "developers": "开发者",
+    "legal": "法律"
+  }
+} 

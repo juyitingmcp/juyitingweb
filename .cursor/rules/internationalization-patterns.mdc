@@ -1,0 +1,338 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# 国际化 (i18n) 模式
+
+## 基础配置
+
+参考 [routing.ts](mdc:openapp-saas-pro-i18n/i18n/routing.ts) 的配置：
+
+### 路由配置
+```typescript
+import { createNavigation } from 'next-intl/navigation';
+import { defineRouting } from 'next-intl/routing';
+
+export const routing = defineRouting({
+  locales: ['en', 'zh-CN', 'de'],
+  defaultLocale: 'en',
+  pathnames: {
+    '/': '/',
+    '/about': {
+      en: '/about',
+      'zh-CN': '/关于',
+      de: '/uber'
+    }
+  }
+});
+
+export const { Link, redirect, usePathname, useRouter, getPathname } =
+  createNavigation(routing);
+
+export type LOCALES = (typeof routing.locales)[number];
+```
+
+### 语言配置
+参考 [locale-config.ts](mdc:openapp-saas-pro-i18n/i18n/locale-config.ts)：
+
+```typescript
+export type LocaleCode = 
+  | 'en' | 'zh-CN' | 'de' | 'fr' | 'es' 
+  | 'ja' | 'ko' | 'pt' | 'ru' | 'ar';
+
+export const localeCodes: Record<string, string> = {
+  en: 'en',
+  'zh-CN': 'zh-Hans',
+  de: 'de',
+  fr: 'fr',
+  // 更多语言...
+};
+```
+
+## 组件国际化
+
+### 客户端组件
+```typescript
+'use client';
+
+import { useTranslations } from 'next-intl';
+
+export function ClientComponent() {
+  const t = useTranslations();
+
+  return (
+    <div>
+      <h1>{t('common.title')}</h1>
+      <p>{t('pages.home.description')}</p>
+      <p>{t('common.welcome', { name: 'John' })}</p>
+    </div>
+  );
+}
+```
+
+### 服务端组件
+参考 [page.tsx](mdc:openapp-saas-pro-i18n/app/[locale]/(public)/(home)/page.tsx)：
+
+```typescript
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+
+export default async function HomePage({
+  params
+}: {
+  params: Promise<{ locale: IntlMessages['LOCALES'] }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  
+  const t = await getTranslations({ locale });
+
+  return (
+    <div>
+      <h1>{t('common.title')}</h1>
+      <p>{t('pages.home.description')}</p>
+    </div>
+  );
+}
+```
+
+### 元数据国际化
+```typescript
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ locale: IntlMessages['LOCALES'] }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale });
+
+  return {
+    title: t('pages.home.title'),
+    description: t('pages.home.metaDescription'),
+  };
+}
+```
+
+## 布局和提供者
+
+### 根布局
+参考 [layout.tsx](mdc:openapp-saas-pro-i18n/app/[locale]/layout.tsx)：
+
+```typescript
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages, setRequestLocale } from 'next-intl/server';
+
+export default async function LocaleLayout({
+  children,
+  params
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: IntlMessages['LOCALES'] }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
+  const messages = await getMessages();
+
+  return (
+    <html lang={locale}>
+      <body>
+        <NextIntlClientProvider messages={messages}>
+          {children}
+        </NextIntlClientProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+## 消息文件结构
+
+参考 [zh-CN.json](mdc:openapp-saas-pro-i18n/messages/zh-CN.json) 的结构：
+
+```json
+{
+  "common": {
+    "title": "标题",
+    "description": "描述",
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功"
+  },
+  "pages": {
+    "home": {
+      "title": "首页",
+      "metaDescription": "首页描述"
+    },
+    "about": {
+      "title": "关于我们"
+    }
+  },
+  "components": {
+    "navigation": {
+      "home": "首页",
+      "about": "关于",
+      "contact": "联系"
+    }
+  }
+}
+```
+
+## 类型安全
+
+参考 [types.ts](mdc:openapp-saas-pro-i18n/i18n/types.ts)：
+
+```typescript
+type Messages = typeof import('../messages/zh-CN.json');
+
+declare global {
+  interface IntlMessages extends Messages {
+    LOCALES: import('./routing').LOCALES;
+  }
+}
+
+export type TranslationKey = keyof Messages;
+
+export type TranslationFunction = (
+  key: TranslationKey,
+  params?: Record<string, string | number>
+) => string;
+```
+
+## 语言切换组件
+
+参考 [switch-locale.tsx](mdc:openapp-saas-pro-i18n/components/ui/switch-locale.tsx)：
+
+```typescript
+'use client';
+
+import { useLocale } from 'next-intl';
+import { useRouter, usePathname } from '@/i18n/routing';
+import { Select, SelectItem } from '@heroui/select';
+
+const locales = [
+  { value: 'en', label: 'English' },
+  { value: 'zh-CN', label: '中文' },
+  { value: 'de', label: 'Deutsch' }
+];
+
+export function SwitchLocale() {
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handleChange = (newLocale: string) => {
+    router.replace(pathname, { locale: newLocale });
+  };
+
+  return (
+    <Select
+      selectedKeys={[locale]}
+      onSelectionChange={(keys) => {
+        const newLocale = Array.from(keys)[0] as string;
+        handleChange(newLocale);
+      }}
+    >
+      {locales.map((option) => (
+        <SelectItem key={option.value} value={option.value}>
+          {option.label}
+        </SelectItem>
+      ))}
+    </Select>
+  );
+}
+```
+
+## 中间件配置
+
+参考 [middleware.ts](mdc:openapp-saas-pro-i18n/middleware.ts)：
+
+```typescript
+import createMiddleware from 'next-intl/middleware';
+import { routing } from './i18n/routing';
+
+export default createMiddleware(routing);
+
+export const config = {
+  matcher: [
+    '/',
+    '/(zh-CN|en|de)/:path*',
+    '/((?!api|_next|_vercel|.*\\..*).*)'
+  ]
+};
+```
+
+## 静态生成
+
+### 生成静态参数
+参考 [layout.tsx](mdc:openapp-saas-pro-i18n/app/[locale]/(public)/layout.tsx)：
+
+```typescript
+export async function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+```
+
+## URL 和链接处理
+
+### SEO 优化
+参考 [head.tsx](mdc:openapp-saas-pro-i18n/components/base/head.tsx)：
+
+```typescript
+import { useLocale } from 'next-intl';
+import { usePathname } from '@/i18n/routing';
+
+export function Head() {
+  const locale = useLocale();
+  const pathname = usePathname();
+  
+  return (
+    <Head>
+      {/* 自引用 hreflang */}
+      <link
+        rel="alternate"
+        hrefLang={locale}
+        href={`${BASE_URL}${locale === 'en' ? '' : `/${locale}`}${pathname}`}
+      />
+      
+      {/* 其他语言版本 */}
+      {locales.map((lang) => (
+        <link
+          key={lang}
+          rel="alternate"
+          hrefLang={lang}
+          href={`${BASE_URL}${lang === 'en' ? '' : `/${lang}`}${pathname}`}
+        />
+      ))}
+      
+      {/* 默认 hreflang */}
+      <link
+        rel="alternate"
+        hrefLang="x-default"
+        href={`${BASE_URL}${pathname}`}
+      />
+    </Head>
+  );
+}
+```
+
+## 配置文件国际化
+
+### 站点配置
+参考 [site-config.tsx](mdc:openapp-saas-pro-i18n/config/site-config.tsx)：
+
+```typescript
+import type { TranslationFunction } from '@/i18n/types';
+
+export const getSiteConfig = (t: TranslationFunction) => ({
+  productName: t('common.productName'),
+  slogan: t('common.slogan'),
+  navbar: {
+    navItems: [
+      { href: '/', label: t('navigation.home') },
+      { href: '/about', label: t('navigation.about') },
+      { href: '/contact', label: t('navigation.contact') }
+    ]
+  }
+});
+```

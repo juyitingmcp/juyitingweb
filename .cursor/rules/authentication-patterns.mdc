@@ -1,0 +1,318 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# 认证和授权模式
+
+## NextAuth.js 配置
+
+参考 [auth.ts](mdc:openapp-saas-pro-i18n/features/auth/auth.ts) 的配置模式：
+
+### 基础配置
+```typescript
+import NextAuth from "next-auth";
+import Google from "next-auth/providers/google";
+import GitHub from "next-auth/providers/github";
+
+export const { handlers, signIn, signOut, auth } = NextAuth({
+  providers: [
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+    GitHub({
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    }),
+  ],
+  
+  callbacks: {
+    async signIn({ account, profile }) {
+      // 登录逻辑
+      if (account?.provider === "google") {
+        return profile?.email_verified === true;
+      }
+      return true;
+    },
+    
+    async session({ session, user }) {
+      // 扩展 session 数据
+      if (session?.user && user) {
+        session.user.id = user.id;
+        session.user.credit = user.credit;
+      }
+      return session;
+    },
+  },
+});
+```
+
+### 类型扩展
+```typescript
+declare module "next-auth" {
+  interface Session extends DefaultSession {
+    user: User;
+  }
+}
+```
+
+## 登录组件模式
+
+参考 [login/page.tsx](mdc:openapp-saas-pro-i18n/app/[locale]/(auth)/login/page.tsx)：
+
+### 客户端登录
+```typescript
+'use client';
+
+import { signIn } from 'next-auth/react';
+import { useRouter } from '@/i18n/routing';
+
+export default function LoginPage() {
+  const router = useRouter();
+  
+  const handleLogin = (provider: string) => {
+    signIn(provider, {
+      redirectTo: '/workspace',
+      redirect: true,
+    });
+  };
+
+  return (
+    <div>
+      <Button onPress={() => handleLogin('google')}>
+        使用 Google 登录
+      </Button>
+      <Button onPress={() => handleLogin('github')}>
+        使用 GitHub 登录
+      </Button>
+    </div>
+  );
+}
+```
+
+### 登录信息组件
+参考 [login-info.tsx](mdc:openapp-saas-pro-i18n/features/auth/components/login-info.tsx)：
+
+```typescript
+import { useSession, signOut } from 'next-auth/react';
+
+export function LoginInfo() {
+  const { data: session, status } = useSession();
+
+  if (status === 'loading') {
+    return <Spinner />;
+  }
+
+  if (!session) {
+    return <LoginButton />;
+  }
+
+  return (
+    <Dropdown>
+      <DropdownTrigger>
+        <Avatar src={session.user.image} />
+      </DropdownTrigger>
+      <DropdownMenu>
+        <DropdownItem>
+          {session.user.name}
+        </DropdownItem>
+        <DropdownItem onPress={() => signOut()}>
+          退出登录
+        </DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
+  );
+}
+```
+
+## 权限保护模式
+
+### 页面级保护
+参考 [client-layout-component.tsx](mdc:openapp-saas-pro-i18n/app/[locale]/workspace/client-layout-component.tsx)：
+
+```typescript
+'use client';
+
+import { useSession } from 'next-auth/react';
+import { useRouter } from '@/i18n/routing';
+
+export function ProtectedLayout({ children }: { children: React.ReactNode }) {
+  const { status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/login');
+    }
+  }, [status, router]);
+
+  if (status === 'loading') {
+    return <LoadingSpinner />;
+  }
+
+  if (status !== 'authenticated') {
+    return null;
+  }
+
+  return <>{children}</>;
+}
+```
+
+### API 路由保护
+```typescript
+import { auth } from '@/features/auth/auth';
+
+export async function GET(request: Request) {
+  const session = await auth();
+  
+  if (!session?.user?.id) {
+    return NextResponse.json(
+      { error: 'Authentication required' },
+      { status: 401 }
+    );
+  }
+
+  // 业务逻辑
+}
+```
+
+### 管理员权限检查
+参考 [admin.ts](mdc:openapp-saas-pro-i18n/lib/admin.ts)：
+
+```typescript
+export async function checkIsAdmin(user?: User) {
+  if (!user?.email) return false;
+  
+  const adminEmails = process.env.ADMIN_EMAILS?.split(',') || [];
+  return adminEmails.includes(user.email);
+}
+```
+
+## 模态框登录
+
+参考 [login-modal.tsx](mdc:openapp-saas-pro-i18n/components/modals/login-modal.tsx)：
+
+```typescript
+import { Modal, ModalContent, ModalBody } from '@heroui/modal';
+import { signIn } from 'next-auth/react';
+
+export function LoginModal({ isOpen, onOpenChange }: ModalProps) {
+  return (
+    <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <ModalContent>
+        <ModalBody>
+          <h2>请先登录</h2>
+          <Button onPress={() => signIn('google')}>
+            使用 Google 登录
+          </Button>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
+  );
+}
+```
+
+## Google One Tap
+
+参考 [google-one-tap.tsx](mdc:openapp-saas-pro-i18n/features/auth/components/google/google-one-tap.tsx)：
+
+```typescript
+'use client';
+
+import { signIn, useSession } from 'next-auth/react';
+
+export function GoogleOneTap() {
+  const { status } = useSession();
+
+  useEffect(() => {
+    if (status === 'authenticated') return;
+
+    const initializeGoogleOneTap = () => {
+      if (window.google) {
+        window.google.accounts.id.initialize({
+          client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+          callback: handleGoogleOneTap,
+        });
+        
+        window.google.accounts.id.prompt();
+      }
+    };
+
+    const handleGoogleOneTap = async (response: any) => {
+      try {
+        await signIn('google', {
+          credential: response.credential,
+          redirect: false,
+        });
+      } catch (error) {
+        console.error('Google One Tap error:', error);
+      }
+    };
+
+    initializeGoogleOneTap();
+  }, [status]);
+
+  return null;
+}
+```
+
+## Session 提供者
+
+参考 [providers.tsx](mdc:openapp-saas-pro-i18n/app/[locale]/providers.tsx)：
+
+```typescript
+import { SessionProvider } from 'next-auth/react';
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return (
+    <SessionProvider>
+      {children}
+    </SessionProvider>
+  );
+}
+```
+
+## 用户状态管理
+
+参考 [user.ts](mdc:openapp-saas-pro-i18n/store/user.ts)：
+
+```typescript
+import { create } from 'zustand';
+
+interface UserStore {
+  userInfo: User | null;
+  status: 'loading' | 'authenticated' | 'unauthenticated';
+  setUserInfo: (userInfo: User | null) => void;
+  setStatus: (status: Status) => void;
+}
+
+export const useUserStore = create<UserStore>((set) => ({
+  userInfo: null,
+  status: 'loading',
+  setUserInfo: (userInfo) => set({ userInfo }),
+  setStatus: (status) => set({ status }),
+}));
+```
+
+## 路由保护 Hook
+
+```typescript
+import { useSession } from 'next-auth/react';
+import { useRouter } from '@/i18n/routing';
+
+export function useAuthProtection() {
+  const { status } = useSession();
+  const router = useRouter();
+
+  const requireAuth = () => {
+    if (status === 'unauthenticated') {
+      router.push('/login');
+      return false;
+    }
+    return status === 'authenticated';
+  };
+
+  return { requireAuth, isAuthenticated: status === 'authenticated' };
+}
+```

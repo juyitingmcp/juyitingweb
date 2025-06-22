@@ -1,0 +1,179 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# 组件开发模式
+
+## Block 组件系统
+
+参考 [block.d.ts](mdc:openapp-saas-pro-i18n/components/blocks/block.d.ts) 的类型定义模式：
+
+### 基础接口设计
+
+```typescript
+declare namespace Block {
+  interface Props<Keys extends string = string> {
+    className?: string;
+    heading?: Record<Keys, Heading>;
+  }
+  
+  interface PropsWithChildren extends Block.Props {
+    children?: React.ReactNode;
+  }
+}
+```
+
+### 组件结构模式
+
+参考 [hero.tsx](mdc:openapp-saas-pro-i18n/components/blocks/hero/hero.tsx) 的结构：
+
+```typescript
+const defaultHeading = {
+  title: 'h2',
+  description: 'h3',
+} satisfies Block.HeroProps['heading'];
+
+export function Hero({ 
+  title, 
+  description, 
+  heading,
+  className 
+}: Block.HeroProps) {
+  const HeadingTag = heading?.title ?? defaultHeading.title;
+  // 组件逻辑
+}
+```
+
+## UI 组件模式
+
+### 样式组合
+使用 `cn` 函数进行样式组合，参考 [features.tsx](mdc:openapp-saas-pro-i18n/components/blocks/features/features.tsx)：
+
+```typescript
+import { cn } from '@/lib/utils';
+
+className={cn(
+  'default-classes',
+  'conditional-classes',
+  props.className
+)}
+```
+
+### 响应式设计
+```typescript
+className={cn(
+  'grid grid-cols-1', // 移动端
+  'md:grid-cols-2',   // 中等屏幕
+  'lg:grid-cols-3'    // 大屏幕
+)}
+```
+
+## 模态框模式
+
+参考 [modal-config.tsx](mdc:openapp-saas-pro-i18n/config/modal-config.tsx) 的模式：
+
+### 类型定义
+```typescript
+export enum ModalType {
+  LoginModal = 'LoginModal',
+  ConfirmModal = 'ConfirmModal',
+}
+
+export interface ModalPayload extends Record<ModalType, any> {
+  [ModalType.ConfirmModal]: {
+    title: string;
+    description: string;
+    onConfirm: () => void;
+  };
+}
+```
+
+### 模态框管理器
+参考 [modal-manager.tsx](mdc:openapp-saas-pro-i18n/components/base/modal-manager.tsx)
+
+## 国际化组件
+
+### 多语言支持
+```typescript
+import { useTranslations } from 'next-intl';
+
+export function Component() {
+  const t = useTranslations();
+  
+  return (
+    <h1>{t('common.title')}</h1>
+  );
+}
+```
+
+### 服务端组件
+```typescript
+import { getTranslations } from 'next-intl/server';
+
+export async function ServerComponent({
+  params
+}: {
+  params: Promise<{ locale: IntlMessages['LOCALES'] }>;
+}) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale });
+  
+  return <h1>{t('common.title')}</h1>;
+}
+```
+
+## 表单组件模式
+
+参考 [contact-form.tsx](mdc:openapp-saas-pro-i18n/components/blocks/contact-form/contact-form.tsx)：
+
+### 状态管理
+```typescript
+const [formData, setFormData] = useState<Record<string, any>>({});
+const [isSubmitting, setIsSubmitting] = useState(false);
+const [error, setError] = useState<string | null>(null);
+```
+
+### 表单处理
+```typescript
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+  try {
+    // 处理提交
+  } catch (err) {
+    setError('提交失败');
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+```
+
+## 性能优化
+
+### 懒加载组件
+```typescript
+import { lazy, Suspense } from 'react';
+
+const LazyComponent = lazy(() => import('./Component'));
+
+function Parent() {
+  return (
+    <Suspense fallback={<div>加载中...</div>}>
+      <LazyComponent />
+    </Suspense>
+  );
+}
+```
+
+### useMemo 优化
+参考 [features.tsx](mdc:openapp-saas-pro-i18n/components/blocks/features/features.tsx)：
+
+```typescript
+const processedData = useMemo(() => {
+  return data.map(item => ({
+    ...item,
+    processed: true
+  }));
+}, [data]);
+```

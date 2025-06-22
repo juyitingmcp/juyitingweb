@@ -1,0 +1,27 @@
+# Dependencies
+/node_modules
+/.pnpm-store
+/pnpm-lock.yaml
+
+# Next.js
+/.next/
+/out/
+/build
+
+# Local Environment
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE / Editor specific
+/.vscode
+/.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# macOS
+.DS_Store 

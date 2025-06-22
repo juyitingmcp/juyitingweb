@@ -1,0 +1,443 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# 支付和计费模式
+
+## 支付配置
+
+参考 [billing-config.ts](mdc:openapp-saas-pro-i18n/config/billing-config.ts) 的结构：
+
+### 价格计划配置
+```typescript
+import type { TranslationFunction } from '@/i18n/types';
+
+export const getBillingPlansConfig = (t: TranslationFunction): Block.PricingPlan[] => [
+  {
+    id: 'FREE',
+    name: t('pricing.plans.free.name'),
+    description: t('pricing.plans.free.description'),
+    credit: 10,
+    pricing: {
+      monthly: {
+        amount: 0,
+        currency: 'USD',
+        unit: 'month',
+        priceId: 'free'
+      }
+    },
+    features: [
+      t('pricing.features.basicSupport'),
+      t('pricing.features.limitedUsage')
+    ],
+    cta: {
+      text: t('pricing.getStarted')
+    }
+  },
+  {
+    id: 'PRO',
+    name: t('pricing.plans.pro.name'),
+    isPopular: true,
+    credit: 1000,
+    pricing: {
+      monthly: {
+        amount: 19.99,
+        currency: 'USD',
+        unit: 'month',
+        priceId: 'price_monthly_pro',
+        billingPeriod: 'monthly'
+      },
+      yearly: {
+        amount: 199.99,
+        currency: 'USD',
+        unit: 'year',
+        priceId: 'price_yearly_pro',
+        billingPeriod: 'yearly',
+        discount: 16
+      }
+    },
+    features: [
+      t('pricing.features.unlimitedUsage'),
+      t('pricing.features.prioritySupport'),
+      t('pricing.features.advancedFeatures')
+    ],
+    cta: {
+      text: t('pricing.subscribe')
+    }
+  }
+];
+```
+
+## Stripe 集成
+
+参考 [stripe](mdc:openapp-saas-pro-i18n/features/billing/stripe) 目录：
+
+### Stripe 实例
+```typescript
+// features/billing/stripe/get-stripe-instance.ts
+import Stripe from 'stripe';
+
+export function getStripeInstance() {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    throw new Error('STRIPE_SECRET_KEY is not set');
+  }
+
+  return new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2024-06-20',
+  });
+}
+```
+
+### 创建支付会话
+参考 [create-transaction/route.ts](mdc:openapp-saas-pro-i18n/app/api/billing/stripe/create-transaction/route.ts)：
+
+```typescript
+export async function POST(request: Request) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const { priceId, interval, successUrl, cancelUrl } = await request.json();
+  
+  const stripe = getStripeInstance();
+  
+  const stripeSession = await stripe.checkout.sessions.create({
+    payment_method_types: ['card'],
+    line_items: [{ price: priceId, quantity: 1 }],
+    mode: interval === 'nonSubscription' ? 'payment' : 'subscription',
+    customer_email: session.user.email,
+    metadata: { userId: session.user.id },
+    success_url: successUrl,
+    cancel_url: cancelUrl,
+  });
+
+  return NextResponse.json({
+    sessionId: stripeSession.id,
+    sessionUrl: stripeSession.url
+  });
+}
+```
+
+### Webhook 处理
+参考 [stripe/webhook/route.ts](mdc:openapp-saas-pro-i18n/app/api/billing/stripe/webhook/route.ts)：
+
+```typescript
+export async function POST(request: Request) {
+  const event = await verifyStripeWebhook(request);
+  if (!event) {
+    return NextResponse.json({ error: 'Invalid webhook' }, { status: 400 });
+  }
+
+  switch (event.type) {
+    case 'checkout.session.completed':
+      await handleCheckoutCompleted(event.data.object);
+      break;
+    case 'customer.subscription.created':
+      await handleSubscriptionCreated(event.data.object);
+      break;
+    case 'customer.subscription.deleted':
+      await handleSubscriptionCancelled(event.data.object);
+      break;
+  }
+
+  return NextResponse.json({ received: true });
+}
+```
+
+## Paddle 集成
+
+参考 [paddle](mdc:openapp-saas-pro-i18n/features/billing/paddle) 目录：
+
+### Paddle 实例
+```typescript
+// features/billing/paddle/get-paddle-instance.ts
+import { Paddle } from '@paddle/paddle-node-sdk';
+
+export function getPaddleInstance() {
+  if (!process.env.PADDLE_API_KEY) {
+    throw new Error('PADDLE_API_KEY is not set');
+  }
+
+  return new Paddle(process.env.PADDLE_API_KEY, {
+    environment: process.env.NODE_ENV === 'production' ? 'production' : 'sandbox'
+  });
+}
+```
+
+### 客户端 Paddle 集成
+参考 [pricing-paddle-connector.tsx](mdc:openapp-saas-pro-i18n/app/[locale]/(public)/pricing/_components/pricing-paddle-connector.tsx)：
+
+```typescript
+import { initializePaddle } from '@paddle/paddle-js';
+
+export function PricingConnector() {
+  const [paddle, setPaddle] = useState<Paddle | null>(null);
+  
+  useEffect(() => {
+    if (!paddle?.Initialized && process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN) {
+      initializePaddle({
+        token: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN,
+        environment: process.env.NODE_ENV === 'production' ? 'production' : 'sandbox',
+        checkout: {
+          settings: {
+            locale: locale === 'zh-CN' ? 'zh-Hans' : 'en',
+          },
+        },
+      }).then((paddleInstance) => {
+        setPaddle(paddleInstance);
+      });
+    }
+  }, [paddle?.Initialized]);
+
+  const handleCheckout = async ({ priceId }) => {
+    if (paddle) {
+      const response = await fetch('/api/billing/paddle/create-transaction', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ priceId }),
+      });
+      
+      const { transactionId } = await response.json();
+      
+      paddle.Checkout.open({
+        transactionId,
+        customer: { email: session.user.email }
+      });
+    }
+  };
+}
+```
+
+## 订阅管理
+
+参考 [subscription-service.ts](mdc:openapp-saas-pro-i18n/services/subscription-service.ts)：
+
+### 创建订阅
+```typescript
+export async function createOrUpdateSubscription({
+  userId,
+  planCode,
+  paymentType,
+  status,
+  providerSubscriptionId,
+  billingPeriod
+}: CreateSubscriptionParams): Promise<Subscription> {
+  return await prisma.subscription.upsert({
+    where: {
+      userId_planCode: { userId, planCode }
+    },
+    update: {
+      status,
+      providerStatus: status.toLowerCase(),
+      updatedAt: new Date()
+    },
+    create: {
+      userId,
+      planCode,
+      paymentType,
+      status,
+      providerSubscriptionId,
+      billingPeriod,
+      providerStatus: status.toLowerCase()
+    }
+  });
+}
+```
+
+### 取消订阅
+参考 [cancel/route.ts](mdc:openapp-saas-pro-i18n/app/api/model/subscriptions/cancel/route.ts)：
+
+```typescript
+export async function POST(request: Request) {
+  const session = await auth();
+  const { subscriptionId } = await request.json();
+
+  const subscription = await prisma.subscription.findFirst({
+    where: { id: subscriptionId, userId: session.user.id }
+  });
+
+  if (!subscription) {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  }
+
+  switch (subscription.paymentType) {
+    case PaymentType.Stripe:
+      const stripe = getStripeInstance();
+      await stripe.subscriptions.cancel(subscription.providerSubscriptionId);
+      break;
+      
+    case PaymentType.Paddle:
+      const paddle = getPaddleInstance();
+      await paddle.subscriptions.cancel(subscription.providerSubscriptionId, {
+        effectiveFrom: 'immediately'
+      });
+      break;
+  }
+
+  await prisma.subscription.update({
+    where: { id: subscriptionId },
+    data: { status: SubscriptionStatus.CANCELLED }
+  });
+
+  return NextResponse.json({ success: true });
+}
+```
+
+## 积分系统
+
+参考 [credit-service.ts](mdc:openapp-saas-pro-i18n/services/credit-service.ts)：
+
+### 添加积分
+```typescript
+export async function addCredit(
+  userId: string,
+  amount: number,
+  type: CreditTransType,
+  description?: string
+): Promise<Credit> {
+  return await prisma.$transaction(async (tx) => {
+    const credit = await tx.credit.create({
+      data: {
+        userId,
+        credits: amount,
+        transType: type,
+        description,
+        status: CreditStatus.ACTIVE
+      }
+    });
+
+    await tx.user.update({
+      where: { id: userId },
+      data: { credit: { increment: amount } }
+    });
+
+    return credit;
+  });
+}
+```
+
+### 使用积分
+```typescript
+export async function useCredits(
+  userId: string,
+  amount: number,
+  description: string
+): Promise<boolean> {
+  return await prisma.$transaction(async (tx) => {
+    const user = await tx.user.findUnique({
+      where: { id: userId },
+      select: { credit: true }
+    });
+
+    if (!user || user.credit < amount) {
+      return false;
+    }
+
+    await tx.credit.create({
+      data: {
+        userId,
+        credits: -amount,
+        transType: CreditTransType.Consumption,
+        description,
+        remainingCredits: user.credit - amount
+      }
+    });
+
+    await tx.user.update({
+      where: { id: userId },
+      data: { credit: { decrement: amount } }
+    });
+
+    return true;
+  });
+}
+```
+
+## 定时任务
+
+参考 [handle-credits/route.ts](mdc:openapp-saas-pro-i18n/app/api/cron/handle-credits/route.ts)：
+
+### 处理过期积分
+```typescript
+export async function processExpiredCredits(): Promise<number> {
+  const expiredCredits = await prisma.credit.findMany({
+    where: {
+      status: CreditStatus.ACTIVE,
+      expiresAt: { lte: new Date() }
+    }
+  });
+
+  let processedCount = 0;
+
+  for (const credit of expiredCredits) {
+    await prisma.$transaction(async (tx) => {
+      await tx.credit.update({
+        where: { id: credit.id },
+        data: { status: CreditStatus.EXPIRED }
+      });
+
+      await tx.user.update({
+        where: { id: credit.userId },
+        data: { credit: { decrement: credit.credits } }
+      });
+
+      processedCount++;
+    });
+  }
+
+  return processedCount;
+}
+```
+
+## 价格展示组件
+
+参考 [pricing.tsx](mdc:openapp-saas-pro-i18n/components/blocks/pricing/pricing.tsx)：
+
+```typescript
+export function Pricing({
+  plans,
+  onPlanSelect,
+  selectedPlanIds,
+  isLoading,
+  monthlyText,
+  yearlyText
+}: Block.PricingProps) {
+  const [interval, setInterval] = useState<Block.BillingInterval>('monthly');
+
+  const handlePlanSelect = (plan: Block.PricingPlan) => {
+    const pricing = plan.pricing[interval];
+    if (pricing && onPlanSelect) {
+      onPlanSelect({
+        plan,
+        priceId: pricing.priceId!,
+        interval,
+        pricing
+      });
+    }
+  };
+
+  return (
+    <div>
+      {/* 计费间隔切换 */}
+      <ToggleButtonGroup value={interval} onChange={setInterval}>
+        <ToggleButton value="monthly">{monthlyText}</ToggleButton>
+        <ToggleButton value="yearly">{yearlyText}</ToggleButton>
+      </ToggleButtonGroup>
+
+      {/* 价格卡片 */}
+      {plans.map((plan) => (
+        <PricingCard
+          key={plan.id}
+          plan={plan}
+          interval={interval}
+          isSelected={selectedPlanIds?.includes(plan.id)}
+          isLoading={isLoading}
+          onSelect={() => handlePlanSelect(plan)}
+        />
+      ))}
+    </div>
+  );
+}
+```

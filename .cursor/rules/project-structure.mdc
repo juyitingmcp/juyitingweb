@@ -1,0 +1,69 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# 项目结构规则
+
+## 目录组织原则
+
+### 应用结构
+组织方式：
+
+- `app/` - Next.js 13+ App Router 结构
+  - `[locale]/` - 国际化路由
+  - `api/` - API 路由
+  - `(auth)/` - 认证相关页面组
+  - `(public)/` - 公开页面组
+  - `workspace/` - 工作区页面
+
+### 组件组织
+- `components/` - 通用组件
+  - `base/` - 基础组件 (如 [head.tsx](mdc:openapp-saas-pro-i18n/components/base/head.tsx))
+  - `blocks/` - 页面区块组件 (如 [hero](mdc:openapp-saas-pro-i18n/components/blocks/hero/hero.tsx))
+  - `ui/` - UI 组件库
+  - `modals/` - 模态框组件
+
+### 功能模块
+- `features/` - 按功能组织的模块
+  - `auth/` - 认证功能
+  - `billing/` - 计费功能
+  - `content/` - 内容管理
+
+### 配置文件
+- `config/` - 配置文件
+  - `site-config.tsx` - 站点配置
+  - `billing-config.ts` - 计费配置
+  - `feature-config.ts` - 功能开关
+
+### 工具库
+- `lib/` - 工具函数和服务
+  - `utils/` - 通用工具函数
+  - `hooks/` - 自定义 Hooks
+  - `env/` - 环境变量处理
+
+## 文件命名规范
+
+1. **组件文件**: kebab-case (如 `user-profile.tsx`)
+2. **页面文件**: `page.tsx`, `layout.tsx`, `loading.tsx`
+3. **配置文件**: kebab-case + 用途 (如 `site-config.ts`)
+4. **工具文件**: kebab-case (如 `format-time.ts`)
+
+## 导入顺序
+
+```typescript
+// 1. React 相关
+import React from 'react'
+import { useState } from 'react'
+
+// 2. 第三方库
+import { Button } from '@heroui/button'
+import { useSession } from 'next-auth/react'
+
+// 3. 内部组件和工具
+import { StyledLink } from '@/components/ui/styled-link'
+import { cn } from '@/lib/utils'
+
+// 4. 类型定义
+import type { User } from '@prisma/client'
+```

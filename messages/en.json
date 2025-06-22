@@ -1,0 +1,232 @@
+{
+  "common": {
+    "productName": "Hall of Sages",
+    "slogan": "Redefining AI Persona Collaboration",
+    "getStarted": "Get Started",
+    "learnMore": "Learn More",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "loading": "Loading...",
+    "error": "Error occurred",
+    "success": "Success"
+  },
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "pricing": "Pricing",
+    "blog": "Blog",
+    "workspace": "Workspace",
+    "dashboard": "Dashboard"
+  },
+  "hero": {
+    "title": "Hall of Sages: Redefining AI Persona Collaboration",
+    "subtitle": "Let everyone have their own AI think tank",
+    "description": "Gain wisdom support beyond individual cognitive limitations through personalized collaboration. Specialized division of labor, multi-dimensional analysis, balance of emotion and rationality.",
+    "cta": "Try for Free",
+    "secondaryCta": "Watch Demo"
+  },
+  "features": {
+    "title": "Core Features",
+    "subtitle": "Gathering talents, collaborative wisdom",
+    "items": [
+      {
+        "title": "Intelligent Persona Orchestration",
+        "description": "Automatically match optimal persona combinations based on problem types and intelligently schedule collaboration processes"
+      },
+      {
+        "title": "Specialized Division of Labor",
+        "description": "Each AI persona focuses on specific thinking patterns, providing valuable advice through deep specialization"
+      },
+      {
+        "title": "Multi-dimensional Analysis",
+        "description": "Simultaneously analyze problems from different perspectives, ensuring comprehensive coverage and avoiding blind spots"
+      },
+      {
+        "title": "Scenario Templates",
+        "description": "Professional templates for decision analysis, technical development, creative planning and other scenarios"
+      }
+    ]
+  },
+  "personas": {
+    "title": "Core Persona Team",
+    "subtitle": "Each with their strengths, working together for justice",
+    "items": [
+      {
+        "name": "Introspective Sage",
+        "role": "Deep Thinker",
+        "description": "Apply MECE principles and first principles for deep logical analysis and strategic thinking",
+        "skills": ["Strategic Analysis", "Problem Decomposition", "Logic Verification"]
+      },
+      {
+        "name": "Grumpy Brother",
+        "role": "Reality Checker",
+        "description": "Directly and sharply question and challenge to ensure consideration of risks and realistic constraints",
+        "skills": ["Risk Analysis", "Reality Check", "Critical Challenge"]
+      },
+      {
+        "name": "Caring Assistant",
+        "role": "Emotional Supporter",
+        "description": "Provide warm and considerate support and encouragement, balancing the coldness of rational analysis",
+        "skills": ["Emotional Support", "Confidence Building", "Warm Advice"]
+      },
+      {
+        "name": "Efficiency Master",
+        "role": "Execution Optimizer",
+        "description": "Focus on efficient execution and time management, transforming thinking into concrete actions",
+        "skills": ["Execution Planning", "Time Management", "Efficiency Optimization"]
+      }
+    ]
+  },
+  "pricing": {
+    "title": "Choose the Right Plan",
+    "subtitle": "From free trial to professional edition, meeting different needs",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "plans": {
+      "free": {
+        "name": "Trial",
+        "description": "Free trial of core features",
+        "price": "Free",
+        "features": [
+          "10 collaboration credits",
+          "4 core personas",
+          "Basic scenario templates",
+          "Community support"
+        ]
+      },
+      "pro": {
+        "name": "Professional",
+        "description": "Perfect for individuals and small teams",
+        "price": "$19",
+        "priceUnit": "/month",
+        "features": [
+          "Unlimited collaboration",
+          "Full persona library",
+          "Advanced scenario templates",
+          "Custom personas",
+          "Priority support"
+        ]
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "description": "Perfect for large teams and enterprises",
+        "price": "Custom",
+        "features": [
+          "Custom persona development",
+          "Private deployment",
+          "API integration",
+          "Dedicated support",
+          "Training services"
+        ]
+      }
+    }
+  },
+  "auth": {
+    "signInTitle": "Sign in to Hall of Sages",
+    "signInDescription": "Start your AI persona collaboration journey",
+    "signInWithGoogle": "Sign in with Google",
+    "signInWithGithub": "Sign in with GitHub",
+    "orContinueWith": "Or continue with",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "dontHaveAccount": "Don't have an account?",
+    "signUp": "Sign up",
+    "alreadyHaveAccount": "Already have an account?"
+  },
+  "workspace": {
+    "title": "Workspace",
+    "createSession": "Create New Collaboration",
+    "recentSessions": "Recent Collaborations",
+    "selectPersonas": "Select Persona Combination",
+    "startCollaboration": "Start Collaboration",
+    "sessionTitle": "Collaboration Topic",
+    "sessionDescription": "Describe the problem or requirements you want to discuss"
+  },
+  "nav": {
+    "hall": "Hall of Sages",
+    "chat": "Collaboration", 
+    "scenarios": "Scenarios",
+    "settings": "Settings"
+  },
+  "hall": {
+    "title": "Hall of Sages",
+    "description": "Select AI personas to form your personal think tank"
+  },
+  "chat": {
+    "title": "Collaboration Chat",
+    "description": "Start collaborating with your AI think tank"
+  },
+  "scenarios": {
+    "title": "Scenario Templates",
+    "description": "Choose professional scenario templates to quickly start AI persona collaboration",
+    "subtitle": "Professional templates covering various work scenarios",
+    "categories": {
+      "business": "Business Decisions",
+      "creative": "Creative Innovation",
+      "technical": "Technical Development", 
+      "personal": "Personal Growth"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Personalize your Hall of Sages experience",
+    "tabs": {
+      "general": "General",
+      "personas": "Persona Preferences",
+      "notifications": "Notifications",
+      "account": "Account"
+    },
+    "general": {
+      "title": "General Settings",
+      "language": "Language",
+      "theme": "Theme",
+      "timezone": "Timezone",
+      "autoSave": "Auto Save",
+      "autoSaveDescription": "Automatically save your collaboration sessions"
+    },
+    "personas": {
+      "title": "Persona Preferences",
+      "defaultPersonas": "Default Persona Combination",
+      "defaultPersonasDescription": "Choose your most frequently used persona combination as default",
+      "personaStyle": "Persona Style",
+      "personaStyleDescription": "Adjust AI persona response style and detail level",
+      "collaborative": "Collaborative",
+      "direct": "Direct",
+      "detailed": "Detailed",
+      "concise": "Concise"
+    },
+    "notifications": {
+      "title": "Notification Settings",
+      "emailNotifications": "Email Notifications",
+      "pushNotifications": "Push Notifications",
+      "collaborationUpdates": "Collaboration Updates",
+      "systemUpdates": "System Updates",
+      "weeklyDigest": "Weekly Digest"
+    },
+    "account": {
+      "title": "Account Settings",
+      "profile": "Profile",
+      "subscription": "Subscription Management",
+      "usage": "Usage Statistics",
+      "dataExport": "Data Export",
+      "deleteAccount": "Delete Account"
+    },
+    "actions": {
+      "save": "Save Settings",
+      "cancel": "Cancel",
+      "reset": "Reset",
+      "export": "Export",
+      "delete": "Delete"
+    }
+  },
+  "footer": {
+    "description": "Redefining AI-era persona collaboration, giving everyone their own dedicated AI think tank.",
+    "slogan": "United in Wisdom, Shared for Eternity",
+    "copyright": "© 2025 Hall of Sages Technology Co., Ltd. All rights reserved.",
+    "product": "Product",
+    "company": "Company",
+    "developers": "Developers", 
+    "legal": "Legal"
+  }
+} 
