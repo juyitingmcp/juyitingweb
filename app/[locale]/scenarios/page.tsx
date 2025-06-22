@@ -189,10 +189,10 @@ export default function ScenariosPage() {
                 </Select>
             </div>
             <div className="hidden md:flex items-center gap-2 rounded-full bg-gray-200 p-1 dark:bg-gray-700">
-                <Button variant={viewMode === 'grid' ? 'secondary' : 'ghost'} size="icon" onClick={() => setViewMode('grid')}>
+                <Button color={viewMode === 'grid' ? 'secondary' : 'default'} variant='ghost' onClick={() => setViewMode('grid')}>
                     <LayoutGrid size={20} />
                 </Button>
-                <Button variant={viewMode === 'list' ? 'secondary' : 'ghost'} size="icon" onClick={() => setViewMode('list')}>
+                <Button color={viewMode === 'list' ? 'secondary' : 'default'} variant='ghost' onClick={() => setViewMode('list')}>
                     <List size={20} />
                 </Button>
             </div>
@@ -204,7 +204,8 @@ export default function ScenariosPage() {
           {categories.map(category => (
             <Button
               key={category}
-              variant={selectedCategory === category ? 'secondary' : 'outline'}
+              variant={selectedCategory === category ? 'solid' : 'bordered'}
+              color={selectedCategory === category ? 'secondary' : 'default'}
               className="rounded-full whitespace-nowrap"
               onClick={() => setSelectedCategory(category)}
             >
@@ -238,7 +239,7 @@ export default function ScenariosPage() {
               </div>
             </div>
             <div className="bg-gray-50 p-6 dark:bg-gray-700/50 mt-auto">
-              <Button className="w-full" onClick={() => handleCreateTeam(template.persona_ids)}>{t('create_team')}</Button>
+              <Button className="w-full" color='secondary' onClick={() => handleCreateTeam(template.persona_ids)}>{t('create_team')}</Button>
             </div>
           </Card>
         ))}

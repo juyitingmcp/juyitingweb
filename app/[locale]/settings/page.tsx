@@ -20,7 +20,6 @@ export default function SettingsPage() {
     name: '',
     avatar: '',
     description: '',
-    prompt: '',
     is_core: false,
     user_id: 'user-custom',
     tags: []
@@ -37,7 +36,6 @@ export default function SettingsPage() {
       name: '',
       avatar: '',
       description: '',
-      prompt: '',
       is_core: false,
       user_id: 'user-custom',
       tags: []
@@ -59,21 +57,24 @@ export default function SettingsPage() {
         <aside className="w-full md:w-1/4">
           <nav className="flex flex-col space-y-2">
             <Button
-              variant={activeTab === 'profile' ? 'secondary' : 'ghost'}
+              color={activeTab === 'profile' ? 'secondary' : 'default'}
+              variant='ghost'
               className="justify-start"
               onClick={() => handleTabChange('profile')}
             >
               {t('tabs.profile')}
             </Button>
             <Button
-              variant={activeTab === 'personas' ? 'secondary' : 'ghost'}
+              color={activeTab === 'personas' ? 'secondary' : 'default'}
+              variant='ghost'
               className="justify-start"
               onClick={() => handleTabChange('personas')}
             >
               {t('tabs.personas')}
             </Button>
             <Button
-              variant={activeTab === 'billing' ? 'secondary' : 'ghost'}
+              color={activeTab === 'billing' ? 'secondary' : 'default'}
+              variant='ghost'
               className="justify-start"
               onClick={() => handleTabChange('billing')}
             >
@@ -95,7 +96,7 @@ export default function SettingsPage() {
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('profile.email')}</label>
                   <Input id="email" type="email" defaultValue="cobo@pity.com" className="mt-1 block w-full" />
                 </div>
-                <Button type="submit">{t('profile.save')}</Button>
+                <Button type="submit" color='secondary'>{t('profile.save')}</Button>
               </form>
             </Card>
           )}
@@ -130,8 +131,7 @@ export default function SettingsPage() {
                     <Input placeholder={t('personas.name_placeholder')} value={newPersona.name} onChange={e => setNewPersona({...newPersona, name: e.target.value})} />
                     <Input placeholder={t('personas.avatar_placeholder')} value={newPersona.avatar} onChange={e => setNewPersona({...newPersona, avatar: e.target.value})}/>
                     <Textarea placeholder={t('personas.desc_placeholder')} value={newPersona.description} onChange={e => setNewPersona({...newPersona, description: e.target.value})}/>
-                    <Textarea placeholder={t('personas.prompt_placeholder')} value={newPersona.prompt} onChange={e => setNewPersona({...newPersona, prompt: e.target.value})}/>
-                    <Button onClick={handleAddPersona}>{t('personas.add_button')}</Button>
+                    <Button onClick={handleAddPersona} color='secondary'>{t('personas.add_button')}</Button>
                 </div>
               </Card>
             </div>
@@ -142,7 +142,7 @@ export default function SettingsPage() {
               <h2 className="text-2xl font-semibold mb-4">{t('billing.title')}</h2>
               <p>{t('billing.current_plan')}: <span className="font-semibold">{t('billing.pro_plan')}</span></p>
               <p>{t('billing.next_billing_date')}: 2025-02-01</p>
-              <Button className="mt-4">{t('billing.manage_subscription')}</Button>
+              <Button className="mt-4" color='secondary'>{t('billing.manage_subscription')}</Button>
             </Card>
           )}
         </main>

@@ -197,16 +197,16 @@ export function PersonaChat({
               )}
             >
               {message.persona && (
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-sm font-medium text-blue-600">
-                    {message.persona.name}
-                  </span>
+                <div className="flex items-center space-x-2">
+                  <span className="font-semibold">{message.persona.name}</span>
                   <Badge variant="outline" className="text-xs">
-                    {message.persona.role}
+                    {message.persona.tags[0] || 'Persona'}
                   </Badge>
                 </div>
               )}
-              <p className="text-sm leading-relaxed">{message.content}</p>
+              <p className="text-gray-800 dark:text-gray-200" style={{ whiteSpace: 'pre-wrap' }}>
+                {message.content}
+              </p>
               <span className="text-xs opacity-60 mt-1 block">
                 {message.timestamp.toLocaleTimeString()}
               </span>

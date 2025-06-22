@@ -27,6 +27,7 @@
     "@paddle/paddle-js": "^1.2.3",
     "@paddle/paddle-node-sdk": "^1.6.0",
     "@prisma/client": "^5.19.1",
+    "@radix-ui/react-select": "^2.2.5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

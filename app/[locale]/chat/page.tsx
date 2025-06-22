@@ -140,11 +140,11 @@ function ChatPageContent() {
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">
+                      <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
                         {persona.name}
                       </p>
                       <p className="text-xs text-gray-500 truncate">
-                        {persona.role}
+                        {persona.description}
                       </p>
                     </div>
                     <div className="w-2 h-2 bg-green-400 rounded-full"></div>

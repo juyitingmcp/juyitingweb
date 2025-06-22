@@ -2,12 +2,11 @@
 export interface AIPersona {
   id: string;
   name: string;
-  role: string;
+  avatar: string;
   description: string;
-  skills: string[];
-  avatar?: string;
-  traits: PersonalityTraits;
-  capabilities: PersonaCapabilities;
+  is_core: boolean;
+  user_id: string;
+  tags: string[];
 }
 
 export interface PersonalityTraits {
