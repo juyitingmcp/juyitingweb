@@ -11,6 +11,8 @@ import { Search, Filter, Users, Star, Plus } from 'lucide-react';
 import { corePersonas } from '@/lib/data/personas';
 import { AIPersona } from '@/types';
 
+export const runtime = 'edge';
+
 interface PersonaCardProps {
   persona: AIPersona;
   onSelect: (persona: AIPersona) => void;

@@ -12,6 +12,7 @@ import { Users, Settings, Download, Share, Target, Clock } from 'lucide-react';
 import { corePersonas } from '@/lib/data/personas';
 import { AIPersona } from '@/types';
 
+export const runtime = 'edge';
 
 interface ScenarioTemplate {
   id: string;
