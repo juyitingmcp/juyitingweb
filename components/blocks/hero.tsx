@@ -75,10 +75,10 @@ export function Hero({
               <div className="relative flex items-center space-x-4 rounded-lg bg-white/80 dark:bg-gray-800/80 p-6 backdrop-blur-sm">
                 <div className="flex -space-x-2">
                   {[
-                    { name: '自省姐', color: 'bg-pink-500' },
-                    { name: '暴躁老哥', color: 'bg-red-500' },
-                    { name: '女仆', color: 'bg-green-500' },
+                    { name: '女仆', color: 'bg-pink-500' },
                     { name: '效率狂', color: 'bg-blue-500' },
+                    { name: '数据帝', color: 'bg-green-500' },
+                    { name: '点子王', color: 'bg-yellow-500' },
                   ].map((persona, index) => (
                     <div
                       key={persona.name}

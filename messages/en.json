@@ -52,18 +52,6 @@
     "subtitle": "Each with their strengths, working together for justice",
     "items": [
       {
-        "name": "Introspective Sage",
-        "role": "Deep Thinker",
-        "description": "Apply MECE principles and first principles for deep logical analysis and strategic thinking",
-        "skills": ["Strategic Analysis", "Problem Decomposition", "Logic Verification"]
-      },
-      {
-        "name": "Grumpy Brother",
-        "role": "Reality Checker",
-        "description": "Directly and sharply question and challenge to ensure consideration of risks and realistic constraints",
-        "skills": ["Risk Analysis", "Reality Check", "Critical Challenge"]
-      },
-      {
         "name": "Caring Assistant",
         "role": "Emotional Supporter",
         "description": "Provide warm and considerate support and encouragement, balancing the coldness of rational analysis",

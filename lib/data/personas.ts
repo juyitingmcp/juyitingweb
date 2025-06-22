@@ -2,24 +2,6 @@ import { AIPersona } from '@/types';
 
 export const corePersonas: AIPersona[] = [
   {
-    id: 'introspective-sage',
-    name: '自省姐',
-    avatar: '🤔',
-    description: '运用MECE原则和第一性原理，进行深度逻辑分析和战略思考。善于发现思考盲点，追溯问题本质。',
-    is_core: true,
-    user_id: 'system',
-    tags: ['思维分析类', '战略思考', '逻辑分析']
-  },
-  {
-    id: 'grumpy-bro',
-    name: '暴躁老哥',
-    avatar: '😤',
-    description: '直接犀利地质疑和挑战，确保考虑风险和现实约束。以现实为准绳，不容忽悠。',
-    is_core: true,
-    user_id: 'system',
-    tags: ['思维分析类', '风险管理', '现实检验']
-  },
-  {
     id: 'warm-maid',
     name: '女仆',
     avatar: '💕',
@@ -217,16 +199,16 @@ export function getPersonaById(id: string): AIPersona | undefined {
 export function getPersonasByCategory(category: string): AIPersona[] {
   // 根据类别筛选人格，这里可以扩展更复杂的分类逻辑
   const categoryMap: Record<string, string[]> = {
-    'decision-making': ['introspective-sage', 'thought-emperor', 'grumpy-bro', 'warm-maid', 'data-sage', 'cautious-one'],
+    'decision-making': ['thought-emperor', 'warm-maid', 'data-sage', 'cautious-one'],
     'creative-brainstorming': ['idea-king', 'disruptor-king', 'happy-fruit', 'intuition-king', 'opportunity-eye'],
     'technical-analysis': ['data-sage', 'architect', 'code-hero', 'test-devil', 'ops-master', 'monitor-eye'],
-    'strategic-planning': ['introspective-sage', 'thought-emperor', 'commander', 'data-sage', 'grumpy-bro'],
-    'problem-solving': ['diligent-worker', 'dimension-analyst', 'introspective-sage', 'efficiency-maniac', 'disruptor-king'],
+    'strategic-planning': ['thought-emperor', 'commander', 'data-sage'],
+    'problem-solving': ['diligent-worker', 'dimension-analyst', 'efficiency-maniac', 'disruptor-king'],
     'project-management': ['project-emperor', 'commander', 'efficiency-maniac', 'diligent-worker', 'scapegoat'],
     'product-development': ['product-officer', 'demand-analyst', 'scene-king', 'architect', 'code-hero'],
-    'risk-assessment': ['cautious-one', 'grumpy-bro', 'scapegoat', 'test-devil'],
+    'risk-assessment': ['cautious-one', 'scapegoat', 'test-devil'],
     'team-collaboration': ['warm-maid', 'happy-fruit', 'commander', 'opportunity-eye'],
-    'analysis-thinking': ['dimension-analyst', 'thought-emperor', 'introspective-sage', 'data-sage']
+    'analysis-thinking': ['dimension-analyst', 'thought-emperor', 'data-sage']
   };
 
   const personaIds = categoryMap[category] || [];

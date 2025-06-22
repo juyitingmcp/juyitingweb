@@ -109,12 +109,12 @@ export function PersonaChat({
   const getPersonaResponse = (persona: AIPersona, userInput: string): string => {
     // 这里是模拟回复，实际中会调用AI API
     const baseResponses = {
-      'introspective-sage': `让我深入思考一下这个问题。首先，我们需要理解问题的本质是什么？从第一性原理来看...`,
-      'fiery-challenger': `等等！这里有几个问题需要质疑：你确定这样做是对的吗？有没有考虑到潜在的风险？`,
       'gentle-maid': `这确实是个值得关注的问题呢。我觉得您可以从这几个角度来考虑，不要有太大压力...`,
       'efficiency-master': `直接给你行动方案：1. 立即开始A 2. 同时准备B 3. 48小时内完成C。时间就是效率！`,
       'data-emperor': `根据我掌握的数据显示，类似情况的成功率是78.3%，主要影响因素包括...`,
-      'idea-king': `哇！这让我想到一个超酷的想法：我们可以尝试从完全不同的角度来看这个问题...`
+      'idea-king': `哇！这让我想到一个超酷的想法：我们可以尝试从完全不同的角度来看这个问题...`,
+      'thought-emperor': `让我运用MECE原则来分析这个问题。首先，我们需要将问题拆解为以下几个维度...`,
+      'cautious-one': `让我们先识别一下这里可能存在的风险和隐患。我认为需要特别注意以下几点...`
     };
 
     let response = baseResponses[persona.id as keyof typeof baseResponses] || `作为${persona.name}，我认为...`;

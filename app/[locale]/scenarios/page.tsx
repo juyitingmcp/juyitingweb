@@ -84,7 +84,7 @@ export default function ScenariosPage() {
       id: 'career-plan',
       title: t('templates.career-plan.title'),
       description: t('templates.career-plan.description'),
-      persona_ids: ['introspective-sage', 'grumpy-bro', 'warm-maid', 'data-sage'],
+      persona_ids: ['thought-emperor', 'cautious-one', 'warm-maid', 'data-sage'],
       tags: [t('categories.personal'), t('categories.decision')],
       author: '社区精选',
       rating: 4.9
@@ -93,7 +93,7 @@ export default function ScenariosPage() {
         id: 'investment',
         title: t('templates.investment.title'),
         description: t('templates.investment.description'),
-        persona_ids: ['data-sage', 'cautious-one', 'opportunity-eye', 'introspective-sage'],
+        persona_ids: ['data-sage', 'cautious-one', 'opportunity-eye', 'thought-emperor'],
         tags: [t('categories.personal'), t('categories.decision')],
         author: '社区精选',
         rating: 4.8
@@ -102,7 +102,7 @@ export default function ScenariosPage() {
         id: 'startup-decision',
         title: t('templates.startup-decision.title'),
         description: t('templates.startup-decision.description'),
-        persona_ids: ['thought-emperor', 'grumpy-bro', 'disruptor-king', 'data-sage', 'warm-maid'],
+        persona_ids: ['thought-emperor', 'cautious-one', 'disruptor-king', 'data-sage', 'warm-maid'],
         tags: [t('categories.personal'), t('categories.decision')],
         author: '社区精选',
         rating: 5.0
@@ -111,7 +111,7 @@ export default function ScenariosPage() {
         id: 'content-creation',
         title: t('templates.content-creation.title'),
         description: t('templates.content-creation.description'),
-        persona_ids: ['idea-king', 'introspective-sage', 'happy-fruit', 'demand-analyst'],
+        persona_ids: ['idea-king', 'thought-emperor', 'happy-fruit', 'demand-analyst'],
         tags: [t('categories.creative'), t('categories.writing')],
         author: '社区精选',
         rating: 4.7
